@@ -10,7 +10,9 @@ class HomeScreenView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<HomeScreenViewModel>.reactive(
       builder: (BuildContext context, HomeScreenViewModel model, Widget? child) {
-        return Scaffold();
+        return Scaffold(
+          body: Center(child: Text("HOME SCREEN VIEWMODEL")),
+        );
       },
       viewModelBuilder: () => HomeScreenViewModel(),
     );
