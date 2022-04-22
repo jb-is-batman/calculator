@@ -1,31 +1,48 @@
 import 'dart:math';
 
+import 'package:calculator/app/customexceptions.dart';
 import 'package:calculator/enums/operationtype_enum.dart';
 
 class CalculationService {
   OperationType     _operationType = OperationType.none;
-  double?           _number1;
-  double?           _number2;
+  double?           _operator1;
+  double?           _operator2;
 
   OperationType get operationType => _operationType;
-  double?       get number1       => _number1;
-  double?       get number2       => _number2;
+  double?       get operator1       => _operator1;
+  double?       get number2       => _operator2;
 
   double? getResult() {
+    if(_operationType == OperationType.none) throw OperatorNotSelectedException();
+    if(_operator1 == null) throw InsufficientOperatorsException();
 
     switch (operationType) {
       case OperationType.plus:
-        return _number1! + _number2!;
+        if(_operator2 == null)  throw InsufficientOperatorsException();
+        return _operator1! + _operator2!;
+
       case OperationType.minus:
-        return _number1! - _number2!;
+        if(_operator2 == null)  throw InsufficientOperatorsException();
+        return _operator1! - _operator2!;
+
       case OperationType.multiply:
-        return _number1!*_number2!;
+        if(_operator2 == null)  throw InsufficientOperatorsException();
+        return _operator1!*_operator2!;
+
       case OperationType.divide:
-        return _number1!/_number2!;
+        if(_operator2 == null)  throw InsufficientOperatorsException();
+        if(_operator2 == 0)     throw DivisionByZeroException();
+        return _operator1!/_operator2!;
+
       case OperationType.sqrt:
-        return sqrt(_number1!);
+        if(_operator1! <= 0)    throw SquareRouteOperandNegativeException();
+        return sqrt(_operator1!);
+      
+      case OperationType.none:
+        throw OperatorNotSelectedException();
+        
       default:
-      return null;
+        throw OperatorNotImplemenedException();
     }
   }
 
@@ -33,17 +50,17 @@ class CalculationService {
     _operationType = value;
   }
 
-  void setNumber1(double value) {
-    _number1 = value;
+  void setOperator1(double? value) {
+    _operator1 = value;
   }
 
-  void setNumber2(double value) {
-    _number2 = value;
+  void setOperator2(double? value) {
+    _operator2 = value;
   }
 
   void clear() {
     _operationType  = OperationType.none;
-    _number1        = null;
-    _number2        = null;
+    _operator1        = null;
+    _operator2        = null;
   }
 }
