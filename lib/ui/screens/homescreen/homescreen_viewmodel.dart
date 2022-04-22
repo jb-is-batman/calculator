@@ -1,24 +1,27 @@
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeScreenViewModel extends BaseViewModel {
 
+  final Logger _logger = Logger();
+
   void plusTapped() {
-    print("PLUS");
+    _logger.d("PLUS");
   }
 
   void minusTapped() {
-    print("MINUS");
+    _logger.d("MINUS");
   }
 
   void multiplyTapped() {
-    print("MULTIPLY");
+    _logger.d("MULTIPLY");
   }
 
   void divideTapped() {
-    print("DIVIDE");
+    _logger.d("DIVIDE");
   }
 
   void sqrtTapped() {
-    print("SQRT");
+    _logger.d("SQRT");
   }
 }
