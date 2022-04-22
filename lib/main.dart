@@ -1,8 +1,10 @@
+import 'package:calculator/app/locator.dart';
 import 'package:calculator/ui/screens/homescreen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async {
+  setupLocator();
   runApp(const MyApp());
 }
 
