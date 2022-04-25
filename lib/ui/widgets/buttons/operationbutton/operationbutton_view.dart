@@ -1,6 +1,7 @@
 import 'package:calculator/app/locator.dart';
 import 'package:calculator/enums/operationtype_enum.dart';
 import 'package:calculator/services/calculationservice.dart';
+import 'package:calculator/ui/screens/selectoperandscreen/selectoperandscreen_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,7 +25,7 @@ class OperationButton extends StatelessWidget {
 
   void onOperationTapped(OperationType value) {
     _calculationService.setOperationType(value);
-    // Get.to(SelectOpera)
+    Get.to(SelectOperandScreenView());
   }
 }
 
