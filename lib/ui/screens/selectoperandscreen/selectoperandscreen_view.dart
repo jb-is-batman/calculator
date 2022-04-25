@@ -1,14 +1,22 @@
 import 'package:calculator/app/locator.dart';
+import 'package:calculator/enums/nondigitoperation_enum.dart';
 import 'package:calculator/services/calculationservice.dart';
 import 'package:calculator/ui/widgets/buttons/calculatorkeybutton/calculatorkeybutton_view.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'selectoperandscreen_viewmodel.dart';
 
-class SelectOperandScreenView extends StatelessWidget {
+class SelectOperandScreenView extends StatefulWidget {
   SelectOperandScreenView({Key? key}) : super(key: key);
 
-  final CalculationService  _calculationService = getIt.get<CalculationService>();
+  @override
+  State<SelectOperandScreenView> createState() => _SelectOperandScreenViewState();
+}
+
+class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
+  final CalculationService    _calculationService     = getIt.get<CalculationService>();
+
+  final TextEditingController _textEditingController  = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,28 +25,44 @@ class SelectOperandScreenView extends StatelessWidget {
         return Scaffold(
           body: Column(
             children: [
+              TextField(
+                controller: _textEditingController,
+                onChanged: (String value) {
+                  _textEditingController.text = value;
+                },
+                readOnly: true,
+                
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CalculatorKeyButtonView(digit: 1),
-                  CalculatorKeyButtonView(digit: 2),
-                  CalculatorKeyButtonView(digit: 3),
+                  Expanded(child: CalculatorKeyButtonView(digit: 1)),
+                  Expanded(child: CalculatorKeyButtonView(digit: 2)),
+                  Expanded(child: CalculatorKeyButtonView(digit: 3)),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CalculatorKeyButtonView(digit: 4),
-                  CalculatorKeyButtonView(digit: 5),
-                  CalculatorKeyButtonView(digit: 6),
+                  Expanded(child: CalculatorKeyButtonView(digit: 4)),
+                  Expanded(child: CalculatorKeyButtonView(digit: 5)),
+                  Expanded(child: CalculatorKeyButtonView(digit: 6)),
                 ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CalculatorKeyButtonView(digit: 7),
-                  CalculatorKeyButtonView(digit: 8),
-                  CalculatorKeyButtonView(digit: 9),
+                  Expanded(child: CalculatorKeyButtonView(digit: 7)),
+                  Expanded(child: CalculatorKeyButtonView(digit: 8)),
+                  Expanded(child: CalculatorKeyButtonView(digit: 9)),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(child: CalculatorKeyButtonView(nonDigitOperation: NonDigitOperation.decimal,)),
+                  Expanded(child: CalculatorKeyButtonView(digit: 0)),
+                  Expanded(child: CalculatorKeyButtonView(nonDigitOperation: NonDigitOperation.negative)),
                 ],
               )
             ],
