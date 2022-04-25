@@ -1,3 +1,5 @@
 import 'package:stacked/stacked.dart';
 
-class SelectOperandScreenViewModel extends BaseViewModel {}
+class SelectOperandScreenViewModel extends BaseViewModel {
+  
+}
