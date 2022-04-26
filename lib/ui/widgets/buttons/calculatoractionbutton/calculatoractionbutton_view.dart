@@ -1,26 +1,30 @@
 import 'package:calculator/app/defaultui.dart';
+import 'package:calculator/enums/calculatoraction_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import 'calculatoractionbutton_viewmodel.dart';
 
 class CalculatorActionButtonView extends StatelessWidget {
-  const CalculatorActionButtonView({Key? key}) : super(key: key);
+  CalculatorActionButtonView({Key? key, required this.calculatorAction, required this.enabled}) : super(key: key);
+
+  CalculatorAction  calculatorAction;
+  bool              enabled;
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<CalculatorActionButtonViewModel>.reactive(
       builder: (BuildContext context, CalculatorActionButtonViewModel model, Widget? child) {
         return InkWell(
-          onTap: (){},
+          onTap: enabled ? () => model.executeAction(calculatorAction) : null,
           child:Container(
-            child: Text("TEST"),
-              decoration: const BoxDecoration(
-              color: kaDefaultButtonColor,
+            child: Text(calculatorAction.name),
+              decoration: BoxDecoration(
+              color:        enabled == true ? kaDefaultButtonColor : Colors.grey,
               borderRadius: kaDefaultBorderRadius
             ),
-            margin: const EdgeInsets.all(kaDefaultMargin),
-            padding: const EdgeInsets.all(kaDefaulPadding)
+            margin:   const EdgeInsets.all(kaDefaultMargin),
+            padding:  const EdgeInsets.all(kaDefaulPadding)
           )
         );
       },

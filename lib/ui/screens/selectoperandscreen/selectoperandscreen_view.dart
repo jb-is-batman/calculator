@@ -1,5 +1,5 @@
-import 'package:calculator/enums/nondigitoperation_enum.dart';
-import 'package:calculator/ui/widgets/buttons/calculatorkeybutton/calculatorkeybutton_view.dart';
+import 'package:calculator/ui/widgets/actionbuttongrouping/actionbuttons_view.dart';
+import 'package:calculator/ui/widgets/keypad/keypad_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
@@ -14,8 +14,6 @@ class SelectOperandScreenView extends StatefulWidget {
 
 class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
 
-  final TextEditingController _textEditingController  = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SelectOperandScreenViewModel>.reactive(
@@ -24,40 +22,12 @@ class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
           body: Column(
             children: [
               Container(height: Get.height*0.1,),
+              Text("For operation: " + model.operationName),
+              Text(model.title),
               Text(model.textfieldValue, style: const TextStyle(fontSize: 20),),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Expanded(child: CalculatorKeyButtonView(digit: 1)),
-                  Expanded(child: CalculatorKeyButtonView(digit: 2)),
-                  Expanded(child: CalculatorKeyButtonView(digit: 3)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Expanded(child: CalculatorKeyButtonView(digit: 4)),
-                  Expanded(child: CalculatorKeyButtonView(digit: 5)),
-                  Expanded(child: CalculatorKeyButtonView(digit: 6)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Expanded(child: CalculatorKeyButtonView(digit: 7)),
-                  Expanded(child: CalculatorKeyButtonView(digit: 8)),
-                  Expanded(child: CalculatorKeyButtonView(digit: 9)),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  Expanded(child: CalculatorKeyButtonView(nonDigitOperation: NonDigitOperation.decimal,)),
-                  Expanded(child: CalculatorKeyButtonView(digit: 0)),
-                  Expanded(child: CalculatorKeyButtonView(nonDigitOperation: NonDigitOperation.negative)),
-                ],
-              )
+              const KeypadView(),
+              Container(height: 16,),
+              const ActionButtonsView()
             ],
           ),
         );

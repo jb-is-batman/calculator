@@ -8,19 +8,34 @@ class CalculationService with ReactiveServiceMixin{
 
     CalculationService() {
       
-    listenToReactiveValues([_operand1, _operand2]);
+    listenToReactiveValues([
+      _operand1, 
+      _operand2, 
+      _screenIndex,
+      _isBackspaceEnabled, 
+      _isNextEnabled, 
+      _isResultEnabled, 
+      _isClearEnabled, 
+      _isBackEnabled, 
+      _isResetEnabled
+    ]);
   }
 
-  OperationType               _operationType    = OperationType.none;
-  // If true it means that we are currently changing operand 1's value.  If it 
-  // is false, then the assumption is that we are changing operand 2's value
-  bool                        _isOperand1Active = true; 
-  final ReactiveValue<String> _operand1         = ReactiveValue<String>("");
-  final ReactiveValue<String> _operand2         = ReactiveValue<String>("");
+  OperationType               _operationType      = OperationType.none;
+  final ReactiveValue<String> _operand1           = ReactiveValue<String>("");
+  final ReactiveValue<String> _operand2           = ReactiveValue<String>("");
+  final ReactiveValue<int>    _screenIndex        = ReactiveValue<int>(0);
+  final ReactiveValue<bool>   _isBackspaceEnabled = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isNextEnabled      = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isResultEnabled    = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isClearEnabled     = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isBackEnabled      = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isResetEnabled     = ReactiveValue<bool>(true);
 
-  OperationType get operationType => _operationType;
-  String        get operand1     => _operand1.value;
-  String        get operand2     => _operand2.value;
+  OperationType get operationType     => _operationType;
+  String        get operand1          => _operand1.value;
+  String        get operand2          => _operand2.value;
+  int           get screenIndex       => _screenIndex.value;
 
   double getResult() {
     if(_operationType == OperationType.none) throw OperatorNotSelectedException();
@@ -37,7 +52,7 @@ class CalculationService with ReactiveServiceMixin{
 
       case OperationType.minus:
         if(oprt2 == null) throw NotANumberException();
-        return oprt2 - oprt2;
+        return oprt1 - oprt2;
 
       case OperationType.multiply:
         if(oprt2 == null) throw NotANumberException();
@@ -46,7 +61,7 @@ class CalculationService with ReactiveServiceMixin{
       case OperationType.divide:
         if(oprt2 == null) throw NotANumberException();
         if(oprt2 == 0)    throw DivisionByZeroException();
-        return oprt2/oprt2;
+        return oprt1/oprt2;
 
       case OperationType.sqrt:
         if(oprt1 <= 0)    throw SquareRouteOperandNegativeException();
@@ -60,42 +75,48 @@ class CalculationService with ReactiveServiceMixin{
     }
   }
 
+  void setScreenIndex(int index) {
+    _screenIndex.value = index;
+  }
+
   void setOperationType(OperationType value) {
     _operationType = value;
   }
 
-  void addToOperand1(String value) {
-    if(value == "-" && _operand1.value == "") {
-       _operand1.value = "-";
-       return;
+  void addToOperand(String value) {
+    String initOperandValue = _screenIndex.value == 1 ? _operand1.value : _operand2.value;
+
+    if(value == "-" && initOperandValue == "") {
+      _screenIndex.value == 1 ? _operand1.value = "-" : _operand2.value = "-";
+      return;
     }
-    String  unParsed  = "${_operand1.value}$value";
+    String  unParsed  = "$initOperandValue$value";
     double? parsed    = double.tryParse(unParsed);
     if(parsed == null) return;
-    _operand1.value = unParsed;
+    _screenIndex.value == 1 ? _operand1.value = unParsed : _operand2.value = unParsed;
   }
 
-  void addToOperand2(String value) {
-    if(value == "-" && _operand2.value.length == 1) {
-      _operand2.value = "-";
+  void backspaceOperand() {
+    String initOperandValue = _screenIndex.value == 1 ? _operand1.value : _operand2.value;
+    if(initOperandValue == "") {
       return;
     }
-    String unParsed = "${_operand2.value}$value";
-    double? parsed = double.tryParse(unParsed);
-    if(parsed == null) return;
-    _operand2.value = unParsed;
+    initOperandValue = initOperandValue.substring(0, initOperandValue.length - 1);
+    _screenIndex.value == 1 ? _operand1.value = initOperandValue : _operand2.value = initOperandValue;
   }
 
-  void backspaceOperand1() {
-    if(_operand1.value == "") {
+  void clearOperand() {
+    if(_screenIndex.value == 1) {
+      _operand1.value = "";
       return;
     }
-    _operand1.value = _operand1.value.substring(0, _operand1.value.length - 1);
+    _operand2.value = "";
   }
 
   void clear() {
-    _operationType    = OperationType.none;
-    _operand1.value  = "";
-    _operand2.value  = "";
+    _operationType      = OperationType.none;
+    _operand1.value     = "";
+    _operand2.value     = "";
+    _screenIndex.value  = 0;
   }
 }
