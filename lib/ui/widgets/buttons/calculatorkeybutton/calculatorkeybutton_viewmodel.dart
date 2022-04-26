@@ -10,8 +10,6 @@ class CalculatorKeyButtonViewModel extends BaseViewModel {
 
   double _buttonWidth = Get.width/3;
 
-  double  get margin      => 4;       
-  double  get padding     => 16;       
   double  get buttonWidth => _buttonWidth;
   double  get boderRadius => 8;
 

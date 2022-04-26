@@ -1,3 +1,4 @@
+import 'package:calculator/app/defaultui.dart';
 import 'package:calculator/enums/nondigitoperation_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -25,22 +26,12 @@ class CalculatorKeyButtonView extends StatelessWidget {
           child: Container(
             alignment: Alignment.center,
             child: Text("${digit ?? nonDigitOperation!.symbol}", style: TextStyle(fontSize: 25),),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.all(Radius.circular(model.boderRadius),)
+            decoration: const BoxDecoration(
+              color: kaDefaultButtonColor,
+              borderRadius: kaDefaultBorderRadius
             ),
-            margin: EdgeInsets.only(
-              left:   model.margin, 
-              right:  model.margin, 
-              top:    model.margin, 
-              bottom: model.margin
-            ),
-            padding: EdgeInsets.only(
-              left:   model.padding,
-              right:  model.padding,
-              top:    model.padding,
-              bottom: model.padding
-            ),
+            margin: EdgeInsets.all(kaDefaultMargin),
+            padding: EdgeInsets.all(kaDefaulPadding)
           )
         );
       },
