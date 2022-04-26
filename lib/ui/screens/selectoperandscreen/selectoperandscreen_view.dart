@@ -1,20 +1,18 @@
-import 'package:calculator/app/locator.dart';
 import 'package:calculator/enums/nondigitoperation_enum.dart';
-import 'package:calculator/services/calculationservice.dart';
 import 'package:calculator/ui/widgets/buttons/calculatorkeybutton/calculatorkeybutton_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 import 'selectoperandscreen_viewmodel.dart';
 
 class SelectOperandScreenView extends StatefulWidget {
-  SelectOperandScreenView({Key? key}) : super(key: key);
+  const SelectOperandScreenView({Key? key}) : super(key: key);
 
   @override
   State<SelectOperandScreenView> createState() => _SelectOperandScreenViewState();
 }
 
 class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
-  final CalculationService    _calculationService     = getIt.get<CalculationService>();
 
   final TextEditingController _textEditingController  = TextEditingController();
 
@@ -25,17 +23,12 @@ class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
         return Scaffold(
           body: Column(
             children: [
-              TextField(
-                controller: _textEditingController,
-                onChanged: (String value) {
-                  _textEditingController.text = value;
-                },
-                readOnly: true,
-                
-              ),
+              Container(height: Get.height*0.1,),
+              Text(model.textfieldValue, style: const TextStyle(fontSize: 20),),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Expanded(child: CalculatorKeyButtonView(digit: 1)),
                   Expanded(child: CalculatorKeyButtonView(digit: 2)),
                   Expanded(child: CalculatorKeyButtonView(digit: 3)),
@@ -43,7 +36,7 @@ class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Expanded(child: CalculatorKeyButtonView(digit: 4)),
                   Expanded(child: CalculatorKeyButtonView(digit: 5)),
                   Expanded(child: CalculatorKeyButtonView(digit: 6)),
@@ -51,7 +44,7 @@ class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Expanded(child: CalculatorKeyButtonView(digit: 7)),
                   Expanded(child: CalculatorKeyButtonView(digit: 8)),
                   Expanded(child: CalculatorKeyButtonView(digit: 9)),
@@ -59,7 +52,7 @@ class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: const [
                   Expanded(child: CalculatorKeyButtonView(nonDigitOperation: NonDigitOperation.decimal,)),
                   Expanded(child: CalculatorKeyButtonView(digit: 0)),
                   Expanded(child: CalculatorKeyButtonView(nonDigitOperation: NonDigitOperation.negative)),
