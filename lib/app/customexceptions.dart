@@ -19,6 +19,13 @@ class DivisionByZeroException implements Exception {
   }
 }
 
+class NotANumberException implements Exception {
+  @override
+  String toString() {
+    return "Value entered is not a valid number.";
+  }
+}
+
 class OperatorNotImplemenedException implements Exception {
   @override
   String toString() {
