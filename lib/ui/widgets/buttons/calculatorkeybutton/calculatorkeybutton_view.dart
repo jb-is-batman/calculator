@@ -5,7 +5,7 @@ import 'package:stacked/stacked.dart';
 import 'calculatorkeybutton_viewmodel.dart';
 
 class CalculatorKeyButtonView extends StatelessWidget {
-  CalculatorKeyButtonView({Key? key, this.digit, this.nonDigitOperation}) : super(key: key);
+  const CalculatorKeyButtonView({Key? key, this.digit, this.nonDigitOperation}) : super(key: key);
 
   final int?                digit;
   final NonDigitOperation?  nonDigitOperation;
@@ -21,7 +21,7 @@ class CalculatorKeyButtonView extends StatelessWidget {
     return ViewModelBuilder<CalculatorKeyButtonViewModel>.reactive(
       builder: (BuildContext context, CalculatorKeyButtonViewModel model, Widget? child) {
         return InkWell(
-          onTap: model.onButtonTapped,
+          onTap: () => model.onAddOperandToNumber(digit == null ? nonDigitOperation!.symbol : "$digit"),
           child: Container(
             alignment: Alignment.center,
             child: Text("${digit ?? nonDigitOperation!.symbol}", style: TextStyle(fontSize: 25),),
