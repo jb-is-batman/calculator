@@ -18,9 +18,10 @@ class CalculationService with ReactiveServiceMixin{
   final ReactiveValue<String> _operand1         = ReactiveValue<String>("");
   final ReactiveValue<String> _operand2         = ReactiveValue<String>("");
 
-  OperationType get operationType => _operationType;
-  String        get operand1     => _operand1.value;
-  String        get operand2     => _operand2.value;
+  OperationType get operationType     => _operationType;
+  String        get operand1          => _operand1.value;
+  String        get operand2          => _operand2.value;
+  bool          get isOperand1Active  => _isOperand1Active;
 
   double getResult() {
     if(_operationType == OperationType.none) throw OperatorNotSelectedException();
@@ -58,6 +59,14 @@ class CalculationService with ReactiveServiceMixin{
       default:
         throw OperatorNotImplemenedException();
     }
+  }
+
+  void setOperand1Active() {
+    _isOperand1Active = true;
+  }
+
+  void setOperand2Active() {
+    _isOperand1Active = false;
   }
 
   void setOperationType(OperationType value) {
