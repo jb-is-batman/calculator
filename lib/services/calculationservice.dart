@@ -8,13 +8,29 @@ class CalculationService with ReactiveServiceMixin{
 
     CalculationService() {
       
-    listenToReactiveValues([_operand1, _operand2, _screenIndex]);
+    listenToReactiveValues([
+      _operand1, 
+      _operand2, 
+      _screenIndex,
+      _isBackspaceEnabled, 
+      _isNextEnabled, 
+      _isResultEnabled, 
+      _isClearEnabled, 
+      _isBackEnabled, 
+      _isResetEnabled
+    ]);
   }
 
-  OperationType               _operationType    = OperationType.none;
-  final ReactiveValue<String> _operand1         = ReactiveValue<String>("");
-  final ReactiveValue<String> _operand2         = ReactiveValue<String>("");
-  final ReactiveValue<int>    _screenIndex      = ReactiveValue<int>(0);
+  OperationType               _operationType      = OperationType.none;
+  final ReactiveValue<String> _operand1           = ReactiveValue<String>("");
+  final ReactiveValue<String> _operand2           = ReactiveValue<String>("");
+  final ReactiveValue<int>    _screenIndex        = ReactiveValue<int>(0);
+  final ReactiveValue<bool>   _isBackspaceEnabled = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isNextEnabled      = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isResultEnabled    = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isClearEnabled     = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isBackEnabled      = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isResetEnabled     = ReactiveValue<bool>(true);
 
   OperationType get operationType     => _operationType;
   String        get operand1          => _operand1.value;
