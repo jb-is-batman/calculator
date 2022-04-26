@@ -5,7 +5,7 @@ const double        kaDefaultMultiple     = 8.0;
 
 // UI components constants
 const BorderRadius  kaDefaultBorderRadius = BorderRadius.all(Radius.circular(4),);
-const Color         kaDefaultButtonColor  = Colors.grey;
+const Color         kaDefaultButtonColor  = Colors.blueAccent;
 
 // Default margin & padding
 const double        kaDefaultMargin       = 8;
