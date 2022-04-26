@@ -10,7 +10,4 @@ class SelectOperandScreenViewModel extends ReactiveViewModel {
 
   String get textfieldValue => _calculationService.operand1.toString();
 
-  void onBackspaceTapped() {
-    _calculationService.backspaceOperand1();
-  }
 }
