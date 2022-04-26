@@ -8,8 +8,8 @@ class SelectOperandScreenViewModel extends ReactiveViewModel {
   @override
   List<ReactiveServiceMixin> get reactiveServices => [_calculationService];
 
-  String get textfieldValue => _calculationService.screenIndex == 1 ? _calculationService.operand1 : _calculationService.operand2;
+  String get textfieldValue => _calculationService.operand;
   String get operationName  => _calculationService.operationType.name;
-  String get title          => _calculationService.screenIndex == 1 ? "Select Operand 1" : "Select Operand 2";
+  String get title          => _calculationService.title;
 
 }

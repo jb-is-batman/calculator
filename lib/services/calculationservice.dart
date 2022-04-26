@@ -12,12 +12,7 @@ class CalculationService with ReactiveServiceMixin{
       _operand1, 
       _operand2, 
       _screenIndex,
-      _isBackspaceEnabled, 
       _isNextEnabled, 
-      _isResultEnabled, 
-      _isClearEnabled, 
-      _isBackEnabled, 
-      _isResetEnabled
     ]);
   }
 
@@ -25,17 +20,14 @@ class CalculationService with ReactiveServiceMixin{
   final ReactiveValue<String> _operand1           = ReactiveValue<String>("");
   final ReactiveValue<String> _operand2           = ReactiveValue<String>("");
   final ReactiveValue<int>    _screenIndex        = ReactiveValue<int>(0);
-  final ReactiveValue<bool>   _isBackspaceEnabled = ReactiveValue<bool>(true);
-  final ReactiveValue<bool>   _isNextEnabled      = ReactiveValue<bool>(true);
-  final ReactiveValue<bool>   _isResultEnabled    = ReactiveValue<bool>(true);
-  final ReactiveValue<bool>   _isClearEnabled     = ReactiveValue<bool>(true);
-  final ReactiveValue<bool>   _isBackEnabled      = ReactiveValue<bool>(true);
-  final ReactiveValue<bool>   _isResetEnabled     = ReactiveValue<bool>(true);
+  final ReactiveValue<bool>   _isNextEnabled      = ReactiveValue<bool>(false);
 
-  OperationType get operationType     => _operationType;
-  String        get operand1          => _operand1.value;
-  String        get operand2          => _operand2.value;
-  int           get screenIndex       => _screenIndex.value;
+
+  OperationType get operationType       => _operationType;
+  int           get screenIndex         => _screenIndex.value;
+  String        get operand             => _screenIndex.value == 1 ? _operand1.value : _operand2.value;
+  String        get title               => _screenIndex.value == 1 ? "Select Operand 1" : "Select Operand 2";
+  bool          get isNextEnabled       => _isNextEnabled.value;
 
   double getResult() {
     if(_operationType == OperationType.none) throw OperatorNotSelectedException();
@@ -76,7 +68,11 @@ class CalculationService with ReactiveServiceMixin{
   }
 
   void setScreenIndex(int index) {
+    if(index < 0 || index > 2) {
+      return;
+    }
     _screenIndex.value = index;
+    _setIsNextEnabled();
   }
 
   void setOperationType(OperationType value) {
@@ -88,35 +84,65 @@ class CalculationService with ReactiveServiceMixin{
 
     if(value == "-" && initOperandValue == "") {
       _screenIndex.value == 1 ? _operand1.value = "-" : _operand2.value = "-";
+      _isNextEnabled.value = false;
       return;
     }
+    else if(value == "-" && initOperandValue.isNotEmpty) {
+      return;
+    }
+
     String  unParsed  = "$initOperandValue$value";
     double? parsed    = double.tryParse(unParsed);
-    if(parsed == null) return;
-    _screenIndex.value == 1 ? _operand1.value = unParsed : _operand2.value = unParsed;
+    if(parsed == null) {
+      _isNextEnabled.value = false;
+      return;
+    }
+
+    _screenIndex.value == 1 ? _isNextEnabled.value  = true      : _isNextEnabled.value = true;
+    _screenIndex.value == 1 ? _operand1.value       = unParsed  : _operand2.value = unParsed;
+    _setIsNextEnabled();
   }
 
   void backspaceOperand() {
     String initOperandValue = _screenIndex.value == 1 ? _operand1.value : _operand2.value;
     if(initOperandValue == "") {
+      _isNextEnabled.value = false;
       return;
     }
     initOperandValue = initOperandValue.substring(0, initOperandValue.length - 1);
     _screenIndex.value == 1 ? _operand1.value = initOperandValue : _operand2.value = initOperandValue;
+    _setIsNextEnabled();
+  }
+
+  void _setIsNextEnabled() {
+    if(_screenIndex.value == 1) {
+      if(double.tryParse(_operand1.value) != null) {
+        _isNextEnabled.value = true;
+        return;
+      }
+    } else if(_screenIndex.value == 2) {
+      if(double.tryParse(_operand2.value) != null) {
+        _isNextEnabled.value = true;
+        return;
+      }
+    } 
+    _isNextEnabled.value = false;
   }
 
   void clearOperand() {
+    _isNextEnabled.value  = false;
     if(_screenIndex.value == 1) {
       _operand1.value = "";
       return;
     }
-    _operand2.value = "";
+    _operand2.value       = "";
   }
 
   void clear() {
-    _operationType      = OperationType.none;
-    _operand1.value     = "";
-    _operand2.value     = "";
-    _screenIndex.value  = 0;
+    _operationType        = OperationType.none;
+    _operand1.value       = "";
+    _operand2.value       = "";
+    _screenIndex.value    = 0;
+    _isNextEnabled.value  = false;
   }
 }

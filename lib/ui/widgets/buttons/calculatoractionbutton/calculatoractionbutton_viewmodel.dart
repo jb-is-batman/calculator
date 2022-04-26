@@ -2,8 +2,8 @@ import 'package:calculator/app/locator.dart';
 import 'package:calculator/enums/calculatoraction_enum.dart';
 import 'package:calculator/enums/operationtype_enum.dart';
 import 'package:calculator/services/calculationservice.dart';
+import 'package:calculator/ui/screens/homescreen/homescreen_view.dart';
 import 'package:calculator/ui/screens/resultscreen/resultscreen_view.dart';
-import 'package:calculator/ui/screens/selectoperandscreen/selectoperandscreen_view.dart';
 import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
@@ -22,8 +22,12 @@ class CalculatorActionButtonViewModel extends BaseViewModel {
       case CalculatorAction.next:
         calculatorNextOrResult();
         break;
-      case CalculatorAction.result:
-        calculatorNextOrResult();
+      case CalculatorAction.back:
+        if(_calculationService.screenIndex == 1) {
+          _calculationService.clear();
+          Get.offAll(const HomeScreenView());
+        }
+        _calculationService.setScreenIndex(1);
         break;
       default:
     }
