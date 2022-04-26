@@ -1,4 +1,5 @@
 import 'package:calculator/enums/nondigitoperation_enum.dart';
+import 'package:calculator/ui/widgets/buttons/calculatoractionbutton/calculatoractionbutton_view.dart';
 import 'package:calculator/ui/widgets/buttons/calculatorkeybutton/calculatorkeybutton_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -57,7 +58,11 @@ class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
                   Expanded(child: CalculatorKeyButtonView(digit: 0)),
                   Expanded(child: CalculatorKeyButtonView(nonDigitOperation: NonDigitOperation.negative)),
                 ],
-              )
+              ),
+              Container(height: 16,),
+              CalculatorActionButtonView(),
+              CalculatorActionButtonView(),
+              CalculatorActionButtonView(),
             ],
           ),
         );
