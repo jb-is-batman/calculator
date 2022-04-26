@@ -1,6 +1,6 @@
 
 enum CalculatorAction {
-  backspace, next, result, clear
+  backspace, next, result, clear, back, reset
 }
 
 extension ExtraFunctionality on CalculatorAction
@@ -18,6 +18,10 @@ extension ExtraFunctionality on CalculatorAction
         return "Result";
       case CalculatorAction.clear:
         return "Clear";
+      case CalculatorAction.back:
+        return "Back";
+      case CalculatorAction.reset:
+        return "Reset";
     }
   }
 }

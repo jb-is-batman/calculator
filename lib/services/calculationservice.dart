@@ -21,6 +21,7 @@ class CalculationService with ReactiveServiceMixin{
   OperationType get operationType     => _operationType;
   String        get operand1          => _operand1.value;
   String        get operand2          => _operand2.value;
+  String        get operand           => _isOperand1Active ? _operand1.value : _operand2.value;
   bool          get isOperand1Active  => _isOperand1Active;
 
   double getResult() {
@@ -73,38 +74,39 @@ class CalculationService with ReactiveServiceMixin{
     _operationType = value;
   }
 
-  void addToOperand1(String value) {
-    if(value == "-" && _operand1.value == "") {
-       _operand1.value = "-";
-       return;
+  void addToOperand(String value) {
+    String initOperandValue = _isOperand1Active == true ? _operand1.value : _operand2.value;
+
+    if(value == "-" && initOperandValue == "") {
+      _isOperand1Active == true ? _operand1.value = "-" : _operand2.value = "-";
+      return;
     }
-    String  unParsed  = "${_operand1.value}$value";
+    String  unParsed  = "$initOperandValue$value";
     double? parsed    = double.tryParse(unParsed);
     if(parsed == null) return;
-    _operand1.value = unParsed;
+    _isOperand1Active == true ? _operand1.value = unParsed : _operand2.value = unParsed;
   }
 
-  void addToOperand2(String value) {
-    if(value == "-" && _operand2.value.length == 1) {
-      _operand2.value = "-";
+  void backspaceOperand() {
+    String initOperandValue = _isOperand1Active == true ? _operand1.value : _operand2.value;
+    if(initOperandValue == "") {
       return;
     }
-    String unParsed = "${_operand2.value}$value";
-    double? parsed = double.tryParse(unParsed);
-    if(parsed == null) return;
-    _operand2.value = unParsed;
+    initOperandValue = initOperandValue.substring(0, initOperandValue.length - 1);
+    _isOperand1Active == true ? _operand1.value = initOperandValue : _operand2.value = initOperandValue;
   }
-
-  void backspaceOperand1() {
-    if(_operand1.value == "") {
+  void clearOperand() {
+    if(_isOperand1Active) {
+      _operand1.value = "";
       return;
     }
-    _operand1.value = _operand1.value.substring(0, _operand1.value.length - 1);
+    _operand2.value = "";
   }
 
   void clear() {
     _operationType    = OperationType.none;
-    _operand1.value  = "";
-    _operand2.value  = "";
+    _operand1.value   = "";
+    _operand2.value   = "";
+    _isOperand1Active = true;
   }
 }
