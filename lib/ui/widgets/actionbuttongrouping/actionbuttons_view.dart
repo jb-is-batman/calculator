@@ -16,9 +16,8 @@ class ActionButtonsView extends StatelessWidget {
           children: [
             CalculatorActionButtonView(calculatorAction: CalculatorAction.backspace, enabled: true),
             CalculatorActionButtonView(calculatorAction: CalculatorAction.clear, enabled: true),
-            CalculatorActionButtonView(calculatorAction: CalculatorAction.next, enabled: true),
+            CalculatorActionButtonView(calculatorAction: CalculatorAction.next, enabled: model.nextEnabled),
             CalculatorActionButtonView(calculatorAction: CalculatorAction.back, enabled: true),
-            CalculatorActionButtonView(calculatorAction: CalculatorAction.result, enabled: false),
           ],
         );
       },
