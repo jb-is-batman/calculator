@@ -14,6 +14,6 @@ class CalculatorKeyButtonViewModel extends BaseViewModel {
   double  get boderRadius => 8;
 
   void onAddOperandToNumber(String value) {
-    _calculationService.addToOperand1(value);
+    _calculationService.addToOperand(value);
   }
 }

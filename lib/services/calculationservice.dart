@@ -8,21 +8,18 @@ class CalculationService with ReactiveServiceMixin{
 
     CalculationService() {
       
-    listenToReactiveValues([_operand1, _operand2]);
+    listenToReactiveValues([_operand1, _operand2, _screenIndex]);
   }
 
   OperationType               _operationType    = OperationType.none;
-  // If true it means that we are currently changing operand 1's value.  If it 
-  // is false, then the assumption is that we are changing operand 2's value
-  bool                        _isOperand1Active = true; 
   final ReactiveValue<String> _operand1         = ReactiveValue<String>("");
   final ReactiveValue<String> _operand2         = ReactiveValue<String>("");
+  final ReactiveValue<int>    _screenIndex      = ReactiveValue<int>(0);
 
   OperationType get operationType     => _operationType;
   String        get operand1          => _operand1.value;
   String        get operand2          => _operand2.value;
-  String        get operand           => _isOperand1Active ? _operand1.value : _operand2.value;
-  bool          get isOperand1Active  => _isOperand1Active;
+  int           get screenIndex       => _screenIndex.value;
 
   double getResult() {
     if(_operationType == OperationType.none) throw OperatorNotSelectedException();
@@ -39,7 +36,7 @@ class CalculationService with ReactiveServiceMixin{
 
       case OperationType.minus:
         if(oprt2 == null) throw NotANumberException();
-        return oprt2 - oprt2;
+        return oprt1 - oprt2;
 
       case OperationType.multiply:
         if(oprt2 == null) throw NotANumberException();
@@ -48,7 +45,7 @@ class CalculationService with ReactiveServiceMixin{
       case OperationType.divide:
         if(oprt2 == null) throw NotANumberException();
         if(oprt2 == 0)    throw DivisionByZeroException();
-        return oprt2/oprt2;
+        return oprt1/oprt2;
 
       case OperationType.sqrt:
         if(oprt1 <= 0)    throw SquareRouteOperandNegativeException();
@@ -62,12 +59,8 @@ class CalculationService with ReactiveServiceMixin{
     }
   }
 
-  void setOperand1Active() {
-    _isOperand1Active = true;
-  }
-
-  void setOperand2Active() {
-    _isOperand1Active = false;
+  void setScreenIndex(int index) {
+    _screenIndex.value = index;
   }
 
   void setOperationType(OperationType value) {
@@ -75,28 +68,29 @@ class CalculationService with ReactiveServiceMixin{
   }
 
   void addToOperand(String value) {
-    String initOperandValue = _isOperand1Active == true ? _operand1.value : _operand2.value;
+    String initOperandValue = _screenIndex.value == 1 ? _operand1.value : _operand2.value;
 
     if(value == "-" && initOperandValue == "") {
-      _isOperand1Active == true ? _operand1.value = "-" : _operand2.value = "-";
+      _screenIndex.value == 1 ? _operand1.value = "-" : _operand2.value = "-";
       return;
     }
     String  unParsed  = "$initOperandValue$value";
     double? parsed    = double.tryParse(unParsed);
     if(parsed == null) return;
-    _isOperand1Active == true ? _operand1.value = unParsed : _operand2.value = unParsed;
+    _screenIndex.value == 1 ? _operand1.value = unParsed : _operand2.value = unParsed;
   }
 
   void backspaceOperand() {
-    String initOperandValue = _isOperand1Active == true ? _operand1.value : _operand2.value;
+    String initOperandValue = _screenIndex.value == 1 ? _operand1.value : _operand2.value;
     if(initOperandValue == "") {
       return;
     }
     initOperandValue = initOperandValue.substring(0, initOperandValue.length - 1);
-    _isOperand1Active == true ? _operand1.value = initOperandValue : _operand2.value = initOperandValue;
+    _screenIndex.value == 1 ? _operand1.value = initOperandValue : _operand2.value = initOperandValue;
   }
+
   void clearOperand() {
-    if(_isOperand1Active) {
+    if(_screenIndex.value == 1) {
       _operand1.value = "";
       return;
     }
@@ -104,9 +98,9 @@ class CalculationService with ReactiveServiceMixin{
   }
 
   void clear() {
-    _operationType    = OperationType.none;
-    _operand1.value   = "";
-    _operand2.value   = "";
-    _isOperand1Active = true;
+    _operationType      = OperationType.none;
+    _operand1.value     = "";
+    _operand2.value     = "";
+    _screenIndex.value  = 0;
   }
 }

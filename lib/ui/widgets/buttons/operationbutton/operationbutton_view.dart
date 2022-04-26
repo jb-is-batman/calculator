@@ -24,8 +24,9 @@ class OperationButton extends StatelessWidget {
   }
 
   void onOperationTapped(OperationType value) {
+    _calculationService.setScreenIndex(1);
     _calculationService.setOperationType(value);
-    Get.to(SelectOperandScreenView());
+    Get.to(const SelectOperandScreenView());
   }
 }
 
