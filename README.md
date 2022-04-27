@@ -22,3 +22,9 @@ This is a Flutter application which demonstrates a different approach to perform
 | get | 4.6.1      |    [link](https://pub.dev/packages/get) |
 | logger | 1.1.0      |    [link](https://pub.dev/packages/logger) |
 | mocktail (dev) | 0.3.0     |    [link](https://pub.dev/packages/mocktail) |
+
+## Initial design
+
+Simple excalidraw design.
+
+[Excalidraw](excalidraw.png)
