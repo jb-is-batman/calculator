@@ -19,6 +19,7 @@ class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
     return ViewModelBuilder<SelectOperandScreenViewModel>.reactive(
       builder: (BuildContext context, SelectOperandScreenViewModel model, Widget? child) {
         return Scaffold(
+          backgroundColor: Color.fromRGBO(2, 62, 138, 1),
           body: Column(
             children: [
               Container(height: Get.height*0.1,),
