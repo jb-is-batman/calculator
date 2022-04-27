@@ -22,7 +22,7 @@ class ResultScreenView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("${model.result}"),
+                Text("${model.data}"),
                 TextButton(
                   onPressed: (){
                     _calculationService.clear();
