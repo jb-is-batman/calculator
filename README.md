@@ -1,16 +1,24 @@
-# calculator
+# Calculator
 
-A new Flutter project.
+This is a Flutter application which demonstrates a different approach to performing calculations.
 
-## Getting Started
+## Intro
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+### Operations supported
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Addition
+- Subtraction
+- Multiply
+- Divide
+- Square Root
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Packages used
+
+| Package Name        | Version           | Url  |
+| ------------- |-------------| -----|
+| stacked      | 2.3.3 | [link](https://pub.dev/packages/stacked) |
+| get_it      | 7.2.0      |   [link](https://pub.dev/packages/get_it) |
+| get | 4.6.1      |    [link](https://pub.dev/packages/get) |
+| logger | 1.1.0      |    [link](https://pub.dev/packages/logger) |
+| mocktail (dev) | 0.3.0     |    [link](https://pub.dev/packages/mocktail) |
