@@ -25,6 +25,10 @@ This is a Flutter application which demonstrates a different approach to perform
 
 ## Initial design
 
-Simple excalidraw design.
+### Flow diagram brief
+
+[Initial flow-diagram brief](./flow_diagram.png)
+
+### Simple excalidraw design.
 
 [Excalidraw](./excalidraw.png)
