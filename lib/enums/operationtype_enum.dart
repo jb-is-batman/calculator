@@ -4,7 +4,7 @@ enum OperationType {
 
 extension ExtraFunctionality on OperationType
 {
-  String get name
+  String get customName
   {
     switch (this)
     {
