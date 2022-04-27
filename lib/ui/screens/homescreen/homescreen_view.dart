@@ -1,3 +1,4 @@
+import 'package:calculator/app/defaultui.dart';
 import 'package:calculator/enums/operationtype_enum.dart';
 import 'package:calculator/ui/widgets/buttons/calculatorkeybutton/calculatorkeybutton_view.dart';
 import 'package:calculator/ui/widgets/buttons/operationbutton/operationbutton_view.dart';
@@ -14,10 +15,13 @@ class HomeScreenView extends StatelessWidget {
     return ViewModelBuilder<HomeScreenViewModel>.reactive(
       builder: (BuildContext context, HomeScreenViewModel model, Widget? child) {
         return Scaffold(
+          backgroundColor: kaDefaultBackgroundColor,
           body: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
-              
-              return OperationButton(operationType: OperationType.values[index],);
+              if(OperationType.values[index] == OperationType.none) return Container();
+              return ListTile(
+                title: OperationButton(operationType: OperationType.values[index],),
+              );
             },
             itemCount: OperationType.values.length,
           ),
