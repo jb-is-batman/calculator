@@ -8,7 +8,7 @@ class InsufficientOperatorsException implements Exception {
 class SquareRouteOperandNegativeException implements Exception {
   @override
   String toString() {
-    return "Can't calculate the square route of a negative oparand.";
+    return "Can't calculate the square route of a negative operand.";
   }
 }
 

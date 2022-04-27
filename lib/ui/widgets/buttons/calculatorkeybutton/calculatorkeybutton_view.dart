@@ -28,7 +28,15 @@ class CalculatorKeyButtonView extends StatelessWidget {
             child: Text("${digit ?? nonDigitOperation!.symbol}", style: const TextStyle(fontSize: 25),),
             decoration: const BoxDecoration(
               color: kaDefaultButtonColor,
-              borderRadius: kaDefaultBorderRadius
+              borderRadius: kaDefaultBorderRadius,
+              boxShadow: [
+                BoxShadow(
+                  spreadRadius: 3,
+                  color: Colors.white30,
+                  offset: Offset(0, 4),
+                  blurRadius: 10
+                )
+              ]
             ),
             margin: const EdgeInsets.all(kaDefaultMargin),
             padding: const EdgeInsets.all(kaDefaulPadding)
