@@ -25,16 +25,16 @@ class CalculatorKeyButtonView extends StatelessWidget {
           onTap: () => model.onAddOperandToNumber(digit == null ? nonDigitOperation!.symbol : "$digit"),
           child: Container(
             alignment: Alignment.center,
-            child: Text("${digit ?? nonDigitOperation!.symbol}", style: const TextStyle(fontSize: 25),),
+            child: Text("${digit ?? nonDigitOperation!.symbol}", style: const TextStyle(fontSize: 15, color: Colors.white60),),
             decoration: const BoxDecoration(
-              color: kaDefaultButtonColor,
+              color: kaDefaultKeyButtonColor,
               borderRadius: kaDefaultBorderRadius,
               boxShadow: [
                 BoxShadow(
                   spreadRadius: 3,
-                  color: Colors.white30,
+                  color: Colors.black26,
                   offset: Offset(0, 4),
-                  blurRadius: 10
+                  blurRadius: 5
                 )
               ]
             ),

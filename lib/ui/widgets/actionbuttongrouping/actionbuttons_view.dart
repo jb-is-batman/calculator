@@ -13,11 +13,16 @@ class ActionButtonsView extends StatelessWidget {
     return ViewModelBuilder<ActionButtonsViewModel>.reactive(
       builder: (BuildContext context, ActionButtonsViewModel model, Widget? child) {
         return Column(
+          mainAxisSize: MainAxisSize.max,
           children: [
-            CalculatorActionButtonView(calculatorAction: CalculatorAction.backspace, enabled: true),
-            CalculatorActionButtonView(calculatorAction: CalculatorAction.clear, enabled: true),
-            CalculatorActionButtonView(calculatorAction: CalculatorAction.next, enabled: model.nextEnabled),
+            Row(
+              children: [
+                Expanded(child: CalculatorActionButtonView(calculatorAction: CalculatorAction.backspace, enabled: true)),
+                Expanded(child: CalculatorActionButtonView(calculatorAction: CalculatorAction.clear, enabled: true)),
+              ],
+            ),
             CalculatorActionButtonView(calculatorAction: CalculatorAction.back, enabled: true),
+            CalculatorActionButtonView(calculatorAction: CalculatorAction.next, enabled: model.nextEnabled),
           ],
         );
       },

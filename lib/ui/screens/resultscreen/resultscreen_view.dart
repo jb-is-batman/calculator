@@ -17,18 +17,21 @@ class ResultScreenView extends StatelessWidget {
     return ViewModelBuilder<ResultScreenViewModel>.reactive(
       builder: (BuildContext context, ResultScreenViewModel model, Widget? child) {
         return Scaffold(
+          backgroundColor: Color.fromRGBO(135, 210, 132, 1),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text("${model.data}"),
+                Divider(),
+                Text("${model.data}", style: TextStyle(color: Colors.white, fontSize: 40)),
+                Divider(),
                 TextButton(
                   onPressed: (){
                     _calculationService.clear();
                     Get.offAll(const HomeScreenView());
                   }, 
-                  child: const Text("Reset")
+                  child: const Text("Reset", style: TextStyle(color: Color.fromRGBO(39, 38, 38, 1),fontSize: 25))
                 )
               ],
             ),

@@ -14,12 +14,14 @@ class OperationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: () => onOperationTapped(operationType),
-      icon: Text(
-        operationType.symbol,
-        style: const TextStyle(fontSize: 25),
-      )
+    return ListTile(
+      onTap: () => onOperationTapped(operationType),
+      title: Text(
+        operationType.customName,
+        style: const TextStyle(fontSize: 25, color: Colors.white),
+      ),
+      leading: Text(operationType.symbol, style: TextStyle(fontSize: 25, color: Colors.white60)),
+      trailing: Icon(Icons.keyboard_arrow_right, color: Colors.white60,),
     );
   }
 
