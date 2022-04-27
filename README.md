@@ -27,4 +27,4 @@ This is a Flutter application which demonstrates a different approach to perform
 
 Simple excalidraw design.
 
-[Excalidraw](excalidraw.png)
+[Excalidraw](./excalidraw.png){:height="500px" width="500px"}
