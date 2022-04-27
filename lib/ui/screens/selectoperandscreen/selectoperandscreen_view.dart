@@ -19,13 +19,20 @@ class _SelectOperandScreenViewState extends State<SelectOperandScreenView> {
     return ViewModelBuilder<SelectOperandScreenViewModel>.reactive(
       builder: (BuildContext context, SelectOperandScreenViewModel model, Widget? child) {
         return Scaffold(
-          backgroundColor: Color.fromRGBO(2, 62, 138, 1),
+          backgroundColor: Color.fromRGBO(40, 52, 64, 1),
           body: Column(
             children: [
-              Container(height: Get.height*0.1,),
-              Text("For operation: " + model.operationName),
-              Text(model.title),
-              Text(model.textfieldValue, style: const TextStyle(fontSize: 20),),
+              Container(height: Get.height*0.05,),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(child: Text("Operation: " + model.operationName, style: TextStyle(color: Colors.white,), textAlign: TextAlign.center,)),
+                  Expanded(child: Text(model.title, style: TextStyle(color: Colors.white), textAlign: TextAlign.center,)),
+                ],
+              ),
+              Divider(color: Colors.white38),
+              Text(model.textfieldValue, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),),
+              Divider(color: Colors.white38,),
               const KeypadView(),
               Container(height: 16,),
               const ActionButtonsView()
