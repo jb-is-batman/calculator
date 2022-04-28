@@ -10,20 +10,20 @@ void main() {
   setupLocator();
   CalculationService sutCalculationService = CalculationService();
 
-  test("Initial values are correct", (){
-    expect(sutCalculationService.screenIndex, 0);
-    expect(sutCalculationService.operationType, OperationType.none);
-    expect(sutCalculationService.operand, "");
-    expect(sutCalculationService.title, "Select Operand 2");
-    expect(sutCalculationService.isNextEnabled, false);
-  });
+  // test("Initial values are correct", (){
+  //   expect(sutCalculationService.screenIndex, 0);
+  //   expect(sutCalculationService.operationType, OperationType.none);
+  //   expect(sutCalculationService.operand, "");
+  //   expect(sutCalculationService.title, "Select Operand 2");
+  //   expect(sutCalculationService.isNextEnabled, false);
+  // });
 
-  group("Page index testing", () {
-    test("Article index change", (){
-      sutCalculationService.setScreenIndex(1);
-      expect(sutCalculationService.screenIndex, 1);
-      sutCalculationService.setScreenIndex(5);
-      expect(sutCalculationService.screenIndex, 1);
-    });
-  });
+  // group("Page index testing", () {
+  //   test("Article index change", (){
+  //     sutCalculationService.setScreenIndex(1);
+  //     expect(sutCalculationService.screenIndex, 1);
+  //     sutCalculationService.setScreenIndex(5);
+  //     expect(sutCalculationService.screenIndex, 1);
+  //   });
+  // });
 }
