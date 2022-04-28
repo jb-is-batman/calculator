@@ -1,63 +1,56 @@
 import 'dart:math';
 
+import 'package:calculator/abstracts/calculation_abs.dart';
 import 'package:calculator/app/customexceptions.dart';
 import 'package:calculator/enums/operationtype_enum.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
-class CalculationService with ReactiveServiceMixin{
+class CalculationService extends Calculation with ReactiveServiceMixin{
 
     CalculationService() {
-      
     listenToReactiveValues([
-      _operand1, 
-      _operand2, 
-      _screenIndex,
+      _operands, 
       _isNextEnabled, 
+      _isResultsEnabled
     ]);
   }
-
-  OperationType               _operationType      = OperationType.none;
-  final ReactiveValue<String> _operand1           = ReactiveValue<String>("");
-  final ReactiveValue<String> _operand2           = ReactiveValue<String>("");
-  final ReactiveValue<int>    _screenIndex        = ReactiveValue<int>(0);
-  final ReactiveValue<bool>   _isNextEnabled      = ReactiveValue<bool>(false);
-
+  final Logger                      _logger             = Logger();              
+  OperationType                     _operationType      = OperationType.none;
+  final ReactiveValue<List<String>> _operands           = ReactiveValue<List<String>>([""]);
+  final ReactiveValue<bool>         _isNextEnabled      = ReactiveValue<bool>(false);
+  final ReactiveValue<bool>         _isResultsEnabled   = ReactiveValue<bool>(false);
 
   OperationType get operationType       => _operationType;
-  int           get screenIndex         => _screenIndex.value;
-  String        get operand             => _screenIndex.value == 1 ? _operand1.value : _operand2.value;
-  String        get title               => _screenIndex.value == 1 ? "Select Operand 1" : "Select Operand 2";
+  int           get operandsLength      => _operands.value.length;
+  String        get operand             => _operands.value.last;
+  String        get title               =>  "Select Operand ${_operands.value.length}";
   bool          get isNextEnabled       => _isNextEnabled.value;
+  bool          get isResultsEnabled    => _isResultsEnabled.value;
 
+  @override
   double getResult() {
     if(_operationType == OperationType.none) throw OperatorNotSelectedException();
 
-    double? oprt1 = double.tryParse(_operand1.value);
-    double? oprt2 = double.tryParse(_operand2.value);
-
-    if(oprt1 == null) throw NotANumberException();
-
+    if(_operationType == OperationType.sqrt) {
+      double value = double.tryParse(_operands.value.first)!;
+      return sqrt(value);
+    }  
+    
+    List<double> parsedDoubles = _operands.value.map(double.parse).toList();
+    
     switch (operationType) {
       case OperationType.plus:
-      if(oprt2 == null)   throw NotANumberException();
-        return oprt1 + oprt2;
+        return plus(parsedDoubles);
 
       case OperationType.minus:
-        if(oprt2 == null) throw NotANumberException();
-        return oprt1 - oprt2;
-
+        return minus(parsedDoubles);
+    
       case OperationType.multiply:
-        if(oprt2 == null) throw NotANumberException();
-        return oprt1*oprt2;
+        return multiply(parsedDoubles);
 
       case OperationType.divide:
-        if(oprt2 == null) throw NotANumberException();
-        if(oprt2 == 0)    throw DivisionByZeroException();
-        return oprt1/oprt2;
-
-      case OperationType.sqrt:
-        if(oprt1 <= 0)    throw SquareRouteOperandNegativeException();
-        return sqrt(oprt1);
+        return divide(parsedDoubles);
       
       case OperationType.none:
         throw OperatorNotSelectedException();
@@ -67,23 +60,15 @@ class CalculationService with ReactiveServiceMixin{
     }
   }
 
-  void setScreenIndex(int index) {
-    if(index < 0 || index > 2) {
-      return;
-    }
-    _screenIndex.value = index;
-    _setIsNextEnabled();
-  }
-
   void setOperationType(OperationType value) {
     _operationType = value;
   }
 
   void addToOperand(String value) {
-    String initOperandValue = _screenIndex.value == 1 ? _operand1.value : _operand2.value;
+    String initOperandValue =_operands.value.last;
 
     if(value == "-" && initOperandValue == "") {
-      _screenIndex.value == 1 ? _operand1.value = "-" : _operand2.value = "-";
+      _operands.value.last = "-";
       _isNextEnabled.value = false;
       return;
     }
@@ -92,57 +77,109 @@ class CalculationService with ReactiveServiceMixin{
     }
 
     String  unParsed  = "$initOperandValue$value";
+
     double? parsed    = double.tryParse(unParsed);
     if(parsed == null) {
       _isNextEnabled.value = false;
       return;
     }
 
-    _screenIndex.value == 1 ? _isNextEnabled.value  = true      : _isNextEnabled.value = true;
-    _screenIndex.value == 1 ? _operand1.value       = unParsed  : _operand2.value = unParsed;
+    _operands.value.last = unParsed;
     _setIsNextEnabled();
+    _setIsResultEnabled();
+    notifyListeners();
   }
 
   void backspaceOperand() {
-    String initOperandValue = _screenIndex.value == 1 ? _operand1.value : _operand2.value;
+    String initOperandValue = _operands.value.last;
     if(initOperandValue == "") {
       _isNextEnabled.value = false;
+    _setIsResultEnabled();
       return;
     }
     initOperandValue = initOperandValue.substring(0, initOperandValue.length - 1);
-    _screenIndex.value == 1 ? _operand1.value = initOperandValue : _operand2.value = initOperandValue;
+    _operands.value.last = initOperandValue;
     _setIsNextEnabled();
+    _setIsResultEnabled();
   }
 
   void _setIsNextEnabled() {
-    if(_screenIndex.value == 1) {
-      if(double.tryParse(_operand1.value) != null) {
+    if(_operands.value.length >= maxOperands) {
+      _isNextEnabled.value = false;
+      return;
+    }
+    else if(double.tryParse(_operands.value.last) != null) {
         _isNextEnabled.value = true;
         return;
       }
-    } else if(_screenIndex.value == 2) {
-      if(double.tryParse(_operand2.value) != null) {
-        _isNextEnabled.value = true;
-        return;
-      }
-    } 
     _isNextEnabled.value = false;
+  }
+  void _setIsResultEnabled() {
+    _logger.d("length: ${_operands.value.length}");
+    if(_operands.value.length > 1) {
+      if(double.tryParse(_operands.value.last) != null) {
+        _isResultsEnabled.value = true;
+      } else {
+        _isResultsEnabled.value = false;
+      }
+    } else {
+      _isResultsEnabled.value = false;
+    }
+    notifyListeners();
   }
 
   void clearOperand() {
     _isNextEnabled.value  = false;
-    if(_screenIndex.value == 1) {
-      _operand1.value = "";
-      return;
-    }
-    _operand2.value       = "";
+    _operands.value.last  = "";
+    _setIsResultEnabled();
   }
 
   void clear() {
-    _operationType        = OperationType.none;
-    _operand1.value       = "";
-    _operand2.value       = "";
-    _screenIndex.value    = 0;
+    _operationType          = OperationType.none;
+    _isNextEnabled.value    = false;
+    _isResultsEnabled.value = false;
+    _operands.value.clear();
+    _operands.value.add("");
+    notifyListeners();
+  }
+ @override 
+  void next() {
+    _operands.value.add("");
     _isNextEnabled.value  = false;
+    _setIsResultEnabled();
+    notifyListeners();
+  }
+
+  @override
+  void back() {
+    _operands.value.removeLast();
+    _logger.d("${_operands.value.length - 1}:${_operands.value.last}");
+    _setIsResultEnabled();
+    notifyListeners();
+  }
+
+  @override
+  double divide(List<double> value) {
+    return value.reduce((value, element) => value / element);
+  }
+
+  @override
+  double minus(List<double> value) {
+    return value.reduce((value, element) => value - element);
+  }
+
+  @override
+  double multiply(List<double> value) {
+    return value.reduce((value, element) => value * element);
+  }
+
+  @override
+  double plus(List<double> value) {
+    return value.reduce((value, element) => value + element);
+  }
+
+  @override
+  double sqrt(double value) {
+    return sqrt(value);
   }
 }
