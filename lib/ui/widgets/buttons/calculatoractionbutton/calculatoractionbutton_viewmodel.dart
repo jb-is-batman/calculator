@@ -5,14 +5,19 @@ import 'package:calculator/services/calculationservice.dart';
 import 'package:calculator/ui/screens/homescreen/homescreen_view.dart';
 import 'package:calculator/ui/screens/resultscreen/resultscreen_view.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:stacked/stacked.dart';
 
 class CalculatorActionButtonViewModel extends BaseViewModel {
   
-  final CalculationService    _calculationService     = getIt.get<CalculationService>();
+  final CalculationService  _calculationService = getIt.get<CalculationService>();
+  final Logger              _logger             = Logger();
 
   void executeAction(CalculatorAction value) {
     switch (value) {
+      case CalculatorAction.result:
+        Get.to(ResultScreenView());
+        break;
       case CalculatorAction.backspace:
         _calculationService.backspaceOperand();
         break;
@@ -20,26 +25,26 @@ class CalculatorActionButtonViewModel extends BaseViewModel {
         _calculationService.clearOperand();
         break;
       case CalculatorAction.next:
-        calculatorNextOrResult();
+        next();
         break;
       case CalculatorAction.back:
-        if(_calculationService.screenIndex == 1) {
+        _logger.d("SCREEN INDEX: ${_calculationService.operandsLength}");
+        if(_calculationService.operandsLength == 1) {
           _calculationService.clear();
           Get.offAll(const HomeScreenView());
+          return;
         }
-        _calculationService.setScreenIndex(1);
+        _calculationService.back();
+
         break;
       default:
     }
   }
 
-  void calculatorNextOrResult() {
+  void next() {
     if(_calculationService.operationType == OperationType.sqrt) {
       Get.to(ResultScreenView());
-    } else if(_calculationService.screenIndex == 1) {
-      _calculationService.setScreenIndex(2);
-    } else {
-      Get.to(ResultScreenView());
-    }
+    } 
+    _calculationService.next();
   }
 }
