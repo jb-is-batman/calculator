@@ -9,5 +9,6 @@ class ActionButtonsViewModel extends ReactiveViewModel {
   @override
   List<ReactiveServiceMixin> get reactiveServices => [_calculationService];
 
-  bool  get nextEnabled       => _calculationService.isNextEnabled;
+  bool  get nextEnabled   => _calculationService.isNextEnabled;
+  bool  get resultEnabled => _calculationService.isResultsEnabled;
 }
